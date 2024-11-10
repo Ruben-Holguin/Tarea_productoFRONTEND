@@ -1,0 +1,60 @@
+<app-sidebar></app-sidebar>
+<div class="card flex justify-content-center m-3">
+    <p-button (click)="showDialogCreate()" label="Crear"></p-button>
+    <p-dialog header="{{titulo}}" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem', height: '25rem' }">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="nombre" class="font-semibold w-6rem">Nombre:</label>
+            <input pInputText [(ngModel)]="producto.nombre" id="nombre" class="flex-auto" autocomplete="off" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="cantidad" class="font-semibold w-6rem">Cantidad:</label>
+            <input pInputText [(ngModel)]="producto.cantidad" id="cantidad" class="flex-auto" autocomplete="off" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="categoria" class="font-semibold w-6rem">Categoria:</label>
+            <p-dropdown
+                [options]="categorias"
+                [(ngModel)]="producto.categoria"
+                optionLabel="nombre"
+                placeholder="Seleccione una Categoria"
+                class="flex-auto"
+                [style]="{ width: '100%' }"
+                [panelStyle]="{ 'max-height': '150px', 'overflow-y': 'auto' }"
+            ></p-dropdown>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Cancelar" severity="secondary" (click)="visible = false"></p-button>
+            <p-button label="{{opc}}" (click)="opcion()"></p-button>
+        </div>
+    </p-dialog>
+</div>
+
+<div class="mt-3" style="width: 100%; display: flex; justify-content: center;">    
+    <div class="card" style="width: 60%;">
+        <p-table [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Categoria</th>
+                    <th>Accion</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.nombre }}</td>
+                    <td>{{ product.cantidad }}</td>
+                    <td>{{ product.categoria?.nombre }}</td>
+                    <td>
+                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="showDialogEdit(product.id)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="showDiaologDelete($event, product.id)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
